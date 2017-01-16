@@ -1,0 +1,59 @@
+machine:
+  environment:
+    YARN_VERSION: 0.18.1
+    PATH: "${PATH}:${HOME}/.yarn/bin:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
+  node:
+    version: 6.8.0
+
+dependencies:
+  pre:
+    - git fetch --tags
+    - |
+      if [[ ! -e ~/.yarn/bin/yarn || $(yarn --version) != "${YARN_VERSION}" ]]; then
+        echo "Download and install Yarn."
+        curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version $YARN_VERSION
+      else
+        echo "The correct version of Yarn is already installed."
+      fi
+    - yarn add angular-cli@latest -g
+  cache_directories:
+    - ~/.yarn
+    - ~/.cache/yarn
+  override:
+    - yarn install
+
+test:
+  override:
+    - echo 'test skipped'
+
+general:
+  branches:
+    ignore:
+      - gh-pages # list of branches to ignore
+
+deployment:
+  release:
+    tag: /v([0-9])*.([0-9])*.([0-9])*$/
+    owner: hanskerkhof
+    commands:
+      - ng build --prod
+      - yarn run deploy
+
+  releasecanidate:
+    tag: /v([0-9])*.([0-9])*.([0-9])*-rc.([0-9])*$/
+    owner: hanskerkhof
+    commands:
+      - ng build --dev
+      - yarn run deploy:dev
+
+  production:
+    branch: master
+    commands:
+      - ng build --prod
+      - yarn run deploy
+
+  development:
+    branch: /dev-.*/
+    commands:
+      - ng build --dev
+      - yarn run deploy:dev

@@ -1,0 +1,29 @@
+$fa-font-path: "../node_modules/font-awesome/fonts";
+@import "../node_modules/font-awesome/scss/font-awesome.scss";
+@import "../node_modules/milligram/dist/milligram.css";
+
+html,
+body {
+  height: 100%;
+}
+
+table h4 {
+  margin: -9px 0 0 0;
+
+}
+
+.loading-screen {
+  align-items: center;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
+.loading-screen-inner {
+  color: #666;
+  font-size: 2em;
+  line-height: 1.3em;
+  margin: 10px;
+  text-align: center;
+  width: 100%;
+}
