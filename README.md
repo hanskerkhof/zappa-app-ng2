@@ -3,7 +3,7 @@
 This simple project is created to learn and understand angular2
 It shows a list of all Frank zappa (antemortem) albums.
 
-Running [demo](http://zappa-app.s3-website-eu-west-1.amazonaws.com/)
+Running [demo](https://hanskerkhof.github.io/zappa-app-ng2)
 
 This project was created with:
 - [angular](https://github.com/angular/angular)
