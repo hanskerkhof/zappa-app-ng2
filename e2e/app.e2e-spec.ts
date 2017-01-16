@@ -1,6 +1,6 @@
 import { AngularCliProjectPage } from './app.po';
 
-describe('angular-cli-project App', function() {
+describe('zappa-app-ng2 App', function() {
   let page: AngularCliProjectPage;
 
   beforeEach(() => {
