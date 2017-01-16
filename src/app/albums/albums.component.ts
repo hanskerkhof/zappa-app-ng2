@@ -81,6 +81,4 @@ export class AlbumsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         this.subscriber.unsubscribe();
     }
-
 }
-
