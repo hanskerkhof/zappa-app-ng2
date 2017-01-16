@@ -1,17 +1,17 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule, enableProdMode} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {AppComponent} from './app.component';
-import {AlbumsComponent} from './albums/albums.component';
 import {RouterModule} from '@angular/router';
-import {AppRoutes} from './app.routes';
-import {AngularFireModule} from 'angularfire2';
+import {enableProdMode, NgModule} from '@angular/core';
+import {AlbumsComponent} from './albums/albums.component';
 import {AlbumService} from './shared/albums/album.service';
+import {AngularFireModule} from 'angularfire2';
+import {AppComponent} from './app.component';
+import {AppRoutes} from './app.routes';
 import {AutoFocusDirective} from './shared/directives/autofocus.directive';
-import {LocalStorageModule} from 'angular-2-local-storage';
 import {environment} from '../environments/environment';
 import {LazyLoadImageModule} from 'ng2-lazyload-image';
+import {LocalStorageModule} from 'angular-2-local-storage';
 
 if (environment.production === true) {
     console.log('Running in production mode.');

@@ -1,6 +1,8 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {IAlbum, Album} from '../shared/albums/album.model';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+
+import {Album, IAlbum} from '../shared/albums/album.model';
 import {AlbumService} from '../shared/albums/album.service';
+
 import {LocalStorageService} from 'angular-2-local-storage';
 
 @Component({
@@ -28,20 +30,20 @@ export class AlbumsComponent implements OnInit, OnDestroy {
         });
     }
 
-    setDisplayMode(mode) {
+    setDisplayMode(mode: string): void {
         this.localStorageService.set('displayMode', mode);
         this.editing = {};
         this.displayMode = mode;
     }
 
-    setOwned(album: IAlbum) {
+    setOwned(album: IAlbum): void {
         let changes: IAlbum = {
             name: album.name.trim(),
             year: album.year,
             owned: album.owned,
             uuid: album.uuid
         };
-        this.albumService.updateAlbum(album, changes); // returns a promise
+        this.albumService.updateAlbum(album, changes);
     }
 
     updateAlbum(album: IAlbum): void {
@@ -76,7 +78,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.subscriber.unsubscribe();
     }
 

@@ -3,12 +3,12 @@ import 'rxjs/add/operator/switchMap';
 import {Injectable} from '@angular/core';
 import {AngularFire, FirebaseListObservable} from 'angularfire2';
 import {IAlbum, Album, AlbumData} from './album.model';
-import {UUID} from 'angular2-uuid';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class AlbumService {
-    private albums$: FirebaseListObservable<IAlbum[]>;
     public items: any;
+    private albums$: FirebaseListObservable<IAlbum[]>;
 
     constructor(af: AngularFire) {
         const path = '/zappa-discography';
@@ -22,7 +22,7 @@ export class AlbumService {
         this.items = af.database.list('/zappa-discography');
     }
 
-    fromBackup() {
+    fromBackup(): void {
         let a = confirm('Really restore all albums?\nCurrent albums will be removed.');
         if (a) {
             this.albums$.remove(null);
@@ -34,7 +34,7 @@ export class AlbumService {
         }
     }
 
-    public listAlbums() {
+    public listAlbums(): Observable<any> {
         return this.albums$;
     }
 
