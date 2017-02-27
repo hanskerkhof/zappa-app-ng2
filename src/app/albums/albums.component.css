@@ -1,3 +1,7 @@
+a {
+    cursor: pointer;
+}
+
 .app-header {
     background-color: #fff;
     box-shadow: 0px 0px 8px 2px #bbb;

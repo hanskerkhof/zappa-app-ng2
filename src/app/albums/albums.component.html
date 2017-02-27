@@ -39,26 +39,73 @@
         <tbody *ngFor="let album of albums$ | async">
         <tr>
           <td>
-                 <span *ngIf="editing[album.$key]"
-                       (click)="editing = {};"><i
-                   class="fa fa-times-circle-o fa-2x"></i></span>
+            <a *ngIf="editing[album.$key]"
+                  (click)="editing = {}; salbum = {}; sralbum = {};"><i
+              class="fa fa-times-circle-o fa-2x"></i>
+            </a>
             <span *ngIf="!editing[album.$key]"
-                  (click)="editing = {}; editing[album.$key] =! editing[album.$key]"><i
-              class="fa fa-pencil-square-o fa-2x"></i>
-       </span>
+                  (click)="editing = {}; salbum = {}; sralbum = {}; editing[album.$key] =! editing[album.$key]">
+<i class="fa fa-pencil-square-o fa-2x"></i>
+           </span>
           </td>
           <td *ngIf="!editing[album.$key]">
-            <h4 class="album-name">{{album.name}}</h4>
+            <h4 class="album-name">{{album.name}}
+
+              <a *ngIf="album.spotifyAlbumId" href="https://open.spotify.com/album/{{album.spotifyAlbumId}}" target="_blank"><i class="fa fa-spotify"></i></a>
+
+            </h4>
           </td>
           <td *ngIf="editing[album.$key]">
             <form name="updateAlbum">
               <input appAutoFocus name="name" type="text" [(ngModel)]="album.name">
               <input name="year" type="number" [(ngModel)]="album.year">
+              <input name="spotify" type="text" placeholder="Spotify album id" [(ngModel)]="album.spotifyAlbumId">
+
               <div>
-                <button type="button" class="button-outline" (click)="editing = {}">Cancel</button>
+                <button type="button" class="button-outline" (click)="editing = {}; salbum = {}; sralbum = {};">Cancel
+                </button>
                 <button type="submit" (click)="updateAlbum(album); $event.preventDefault();">Save</button>
               </div>
-              uuid: {{album.uuid}}
+              uuid: {{album.uuid}}<br>
+
+              <a *ngIf="album.spotifyAlbumId" (click)="getSpotifyAlbum(album.spotifyAlbumId)"><i
+                class="fa fa-spotify"></i>
+                get album on Spotify
+              </a>
+              <div *ngIf="salbum.tracks">
+                <div>
+                  <div *ngFor="let image of salbum.images">
+                    <img *ngIf="image.height === 64" [src]="image.url">
+                  </div>
+                  {{salbum.name}} - {{salbum.release_date}}<br>
+                  label: {{salbum.label}}<br>
+                  <a href="{{salbum.external_urls.spotify}}" target="_blank"><i class="fa fa-play-circle-o"></i> Listen</a>
+                </div>
+                <div *ngFor="let track of salbum.tracks.items">
+                  <div>
+                    {{track.track_number}}. {{track.name}} - {{track.duration_ms / 1000}}
+                  </div>
+                </div>
+              </div>
+
+              <a (click)="searchSpotifyAlbum(album.name)"><i
+                class="fa fa-spotify"></i>
+                search for album on Spotify
+              </a><br>
+              <div *ngIf="sralbum.albums">
+                <h3>Search result</h3>
+                <div style="border: solid 1px #999; min-height: 76px; margin-bottom: 10px; padding: 5px;" *ngFor="let a of sralbum.albums.items">
+                  <div>
+                    <div *ngFor="let image of a.images">
+                      <img align="left" style="margin-right: 10px;" *ngIf="image.height === 64" [src]="image.url">
+                    </div>
+                    {{a.name}} - {{a.artists[0].name}} - {{a.id}}<br>
+                    <a (click)="album.spotifyAlbumId = a.id"><i class="fa fa-clipboard"></i> Use id</a>
+                    <a href="https://open.spotify.com/album/{{a.id}}" target="_blank"><i class="fa fa-play-circle-o"></i> Listen</a>
+                  </div>
+                </div>
+              </div>
+
             </form>
           </td>
           <td>
@@ -81,7 +128,7 @@
       <tbody *ngIf="!newalbum">
       <tr>
         <td>
-          <span (click)="editing = {}; newalbum = true">
+          <span (click)="editing = {}; salbum = {}; sralbum = {}; newalbum = true">
             <i class="fa fa-plus-square-o fa-2x"></i>
           </span>
         </td>

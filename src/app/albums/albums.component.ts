@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 
 import {Album, IAlbum} from '../shared/albums/album.model';
 import {AlbumService} from '../shared/albums/album.service';
-
+import {SpotifyService} from '../shared/spotify.service';
 import {LocalStorageService} from 'angular-2-local-storage';
 
 @Component({
@@ -13,20 +13,24 @@ export class AlbumsComponent implements OnInit, OnDestroy {
     albums$: any;
     editing: any = {};
     newalbum: boolean = false;
-    n = new Album('', null);
+    n = new Album('', null, '');
     albumsList = [];
     albumsCount: number;
     subscriber: any;
     displayMode: string = 'list';
+    salbum: any = {};
+    sralbum: any = {};
 
     constructor(public albumService: AlbumService,
-                private localStorageService: LocalStorageService) {}
+                public SpotifyService: SpotifyService,
+                private localStorageService: LocalStorageService) {
+    }
 
     createAlbum(album: IAlbum): void {
         let r = this.albumService.createAlbum(album);
         r.then(() => {
             this.newalbum = false;
-            this.n = new Album('', null);
+            this.n = new Album('', null, '');
         });
     }
 
@@ -41,6 +45,7 @@ export class AlbumsComponent implements OnInit, OnDestroy {
             name: album.name.trim(),
             year: album.year,
             owned: album.owned,
+            spotifyAlbumId: album.spotifyAlbumId,
             uuid: album.uuid
         };
         this.albumService.updateAlbum(album, changes);
@@ -51,6 +56,8 @@ export class AlbumsComponent implements OnInit, OnDestroy {
             name: album.name.trim(),
             year: album.year,
             owned: album.owned,
+//            3PZXB9NBWf11eDS72JCGaY
+            spotifyAlbumId: album.spotifyAlbumId,
             uuid: album.uuid
         };
         this.albumService.updateAlbum(album, changes)
@@ -64,6 +71,26 @@ export class AlbumsComponent implements OnInit, OnDestroy {
         if (a) {
             this.albumService.deleteAlbum(album);
         }
+    }
+
+    searchSpotifyAlbum (albumName) {
+        this.SpotifyService.searchAlbum(albumName)
+            .subscribe(
+                sralbum => this.sralbum = sralbum, //Bind to view
+                err => {
+                    // Log errors if any
+                });
+
+    }
+
+    getSpotifyAlbum (albumId: string) {
+        this.SpotifyService.getAlbum(albumId)
+            .subscribe(
+                salbum => this.salbum = salbum, //Bind to view
+                err => {
+                    // Log errors if any
+                    console.log(err);
+                });
     }
 
     ngOnInit(): void {

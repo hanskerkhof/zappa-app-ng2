@@ -5,6 +5,7 @@ import {RouterModule} from '@angular/router';
 import {enableProdMode, NgModule} from '@angular/core';
 import {AlbumsComponent} from './albums/albums.component';
 import {AlbumService} from './shared/albums/album.service';
+import {SpotifyService} from './shared/spotify.service';
 import {AngularFireModule} from 'angularfire2';
 import {AppComponent} from './app.component';
 import {AppRoutes} from './app.routes';
@@ -42,7 +43,8 @@ if (environment.production === true) {
         RouterModule.forRoot(AppRoutes, {useHash: true}) // forRoot is a static class method with provided configuration
     ],
     providers: [
-        AlbumService
+        AlbumService,
+        SpotifyService
     ],
     bootstrap: [AppComponent]
 })
