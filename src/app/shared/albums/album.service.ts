@@ -39,7 +39,7 @@ export class AlbumService {
     }
 
     public createAlbum(album: IAlbum): firebase.Promise<any> {
-        return this.albums$.push(new Album(album.name, album.year));
+        return this.albums$.push(new Album(album.name, album.year, album.spotifyAlbumId));
     }
 
     public updateAlbum(album: IAlbum, changes: IAlbum): firebase.Promise<any> {

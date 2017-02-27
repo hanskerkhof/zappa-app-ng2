@@ -50,9 +50,7 @@
           </td>
           <td *ngIf="!editing[album.$key]">
             <h4 class="album-name">{{album.name}}
-
               <a *ngIf="album.spotifyAlbumId" href="https://open.spotify.com/album/{{album.spotifyAlbumId}}" target="_blank"><i class="fa fa-spotify"></i></a>
-
             </h4>
           </td>
           <td *ngIf="editing[album.$key]">
