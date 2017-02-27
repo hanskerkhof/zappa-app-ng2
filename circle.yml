@@ -38,7 +38,6 @@ deployment:
     commands:
       - ng build --prod
       - yarn run deploy
-      - ng github-pages:deploy
 
   releasecanidate:
     tag: /v([0-9])*.([0-9])*.([0-9])*-rc.([0-9])*$/
@@ -52,7 +51,6 @@ deployment:
     commands:
       - ng build --prod
       - yarn run deploy
-      - ng github-pages:deploy
 
   development:
     branch: /dev-.*/
