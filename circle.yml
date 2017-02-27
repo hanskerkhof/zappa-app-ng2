@@ -52,6 +52,7 @@ deployment:
     commands:
       - ng build --prod
       - yarn run deploy
+      - ng github-pages:deploy
 
   development:
     branch: /dev-.*/
