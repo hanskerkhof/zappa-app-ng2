@@ -1,177 +1,189 @@
 <main>
-  <div class="app-header">
-    <h2 style="margin: 0 0 0 10px;">Frank Zappa</h2>
-    <div class="display-mode-selector">
-      <a [class.active]="displayMode == 'list'" href="#" (click)="setDisplayMode('list')">
-        <i class="fa fa-th-list fa-2x"></i>
-      </a>
-      <a [class.active]="displayMode == 'grid'" href="#" (click)="setDisplayMode('grid')">
-        <i class="fa fa-camera-retro fa-2x"></i>
-      </a>
-    </div>
-  </div>
-
-  <div class="app-main">
-    <div *ngIf="displayMode == 'grid'">
-      <div class="album-grid-item" *ngFor="let album of albums$ | async">
-
-        <img [src]="'assets/img/default-cover.jpg'"
-             [lazyLoad]="'assets/img/covers/'+album.uuid+'.jpg'"
-             [offset]="'100'">
-
-        <!--<img src="assets/img/covers/{{album.uuid}}.jpg">-->
-        <div *ngIf="album.owned" class="owned"><i class="fa fa-check-square-o fa-2x"></i></div>
-        <div class="year">{{album.year}}</div>
-      </div>
-    </div>
-
-    <div *ngIf="displayMode == 'list'">
-      <table *ngIf="albumsCount">
-        <thead>
-        <tr>
-          <th></th>
-          <th>Album ({{albumsCount}})</th>
-          <th>Year</th>
-          <th>Owned</th>
-          <th></th>
-        </tr>
-        </thead>
-        <tbody *ngFor="let album of albums$ | async">
-        <tr>
-          <td>
-            <a *ngIf="editing[album.$key]"
-               (click)="editing = {}; salbum = {}; sralbum = {};"><i
-              class="fa fa-times-circle-o fa-2x"></i>
+    <div class="app-header">
+        <h2 style="margin: 0 0 0 10px;">Frank Zappa</h2>
+        <div class="display-mode-selector">
+            <a [class.active]="displayMode == 'list'" href="#" (click)="setDisplayMode('list')">
+                <i class="fa fa-th-list fa-2x"></i>
             </a>
-            <span *ngIf="!editing[album.$key]"
-                  (click)="editing = {}; salbum = {}; sralbum = {}; getSpotifyAlbum(album.spotifyAlbumId); editing[album.$key] =! editing[album.$key]">
+            <a [class.active]="displayMode == 'grid'" href="#" (click)="setDisplayMode('grid')">
+                <i class="fa fa-camera-retro fa-2x"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="app-main">
+        <div *ngIf="displayMode == 'grid'">
+            <div class="album-grid-item" *ngFor="let album of albums$ | async">
+
+                <img [src]="'assets/img/default-cover.jpg'"
+                     [lazyLoad]="'assets/img/covers/'+album.uuid+'.jpg'"
+                     [offset]="'100'">
+
+                <!--<img src="assets/img/covers/{{album.uuid}}.jpg">-->
+                <div *ngIf="album.owned" class="owned"><i class="fa fa-check-square-o fa-2x"></i></div>
+                <div class="year">{{album.year}}</div>
+            </div>
+        </div>
+
+        <div *ngIf="displayMode == 'list'">
+            <table *ngIf="albumsCount">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Album ({{albumsCount}})</th>
+                    <th>Year</th>
+                    <th>Owned</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody *ngFor="let album of albums$ | async">
+                <tr>
+                    <td>
+                        <a *ngIf="editing[album.$key]"
+                           (click)="editing = {}; salbum = {}; sralbum = {};"><i
+                            class="fa fa-times-circle-o fa-2x"></i>
+                        </a>
+                        <span *ngIf="!editing[album.$key]"
+                              (click)="editing = {}; salbum = {}; sralbum = {}; getSpotifyAlbum(album.spotifyAlbumId); editing[album.$key] =! editing[album.$key]">
                   <i class="fa fa-pencil-square-o fa-2x"></i>
            </span>
-          </td>
-          <td *ngIf="!editing[album.$key]">
-            <h4 class="album-name">{{album.name}}
-              <a *ngIf="album.spotifyAlbumId" href="https://open.spotify.com/album/{{album.spotifyAlbumId}}"
-                 target="_blank"><i class="fa fa-spotify"></i></a>
-            </h4>
-          </td>
-          <td *ngIf="editing[album.$key]">
-            <form name="updateAlbum">
-              <input appAutoFocus name="name" type="text" [(ngModel)]="album.name">
-              <input name="year" type="number" [(ngModel)]="album.year">
-              <input name="spotify" type="text" placeholder="Spotify album id" [(ngModel)]="album.spotifyAlbumId">
+                    </td>
+                    <td *ngIf="!editing[album.$key]">
+                        <h4 class="album-name">{{album.name}}
+                            <a *ngIf="album.spotifyAlbumId"
+                               href="https://open.spotify.com/album/{{album.spotifyAlbumId}}"
+                               target="_blank"><i class="fa fa-spotify"></i></a>
+                        </h4>
+                    </td>
+                    <td *ngIf="editing[album.$key]">
+                        <form name="updateAlbum">
+                            <input appAutoFocus name="name" type="text" [(ngModel)]="album.name">
+                            <input name="year" type="number" [(ngModel)]="album.year">
+                            <input name="spotify" type="text" placeholder="Spotify album id"
+                                   [(ngModel)]="album.spotifyAlbumId">
 
-              <div>
-                <button type="button" class="button-outline" (click)="editing = {}; salbum = {}; sralbum = {};">Cancel
-                </button>
-                <button type="submit" (click)="updateAlbum(album); $event.preventDefault();">Save</button>
-              </div>
-              uuid: {{album.uuid}}<br>
+                            <div>
+                                <button type="button" class="button-outline"
+                                        (click)="editing = {}; salbum = {}; sralbum = {};">Cancel
+                                </button>
+                                <button type="submit" (click)="updateAlbum(album); $event.preventDefault();">Save
+                                </button>
+                            </div>
+                            uuid: {{album.uuid}}<br>
 
-              <!--<a *ngIf="album.spotifyAlbumId" (click)="getSpotifyAlbum(album.spotifyAlbumId)"><i-->
-                <!--class="fa fa-spotify"></i>-->
-                <!--get album on Spotify-->
-              <!--</a>-->
-              <div *ngIf="salbum.tracks"
-                   style="border: solid 1px #999; min-height: 76px; margin-bottom: 10px; padding: 5px;">
-                <h4>Album</h4>
-                <div style="min-height: 76px;">
-                  <div *ngFor="let image of salbum.images">
-                    <img align="left" style="margin-right: 10px; border: solid 1px #999;" *ngIf="image.height === 64" [src]="image.url">
-                  </div>
-                  {{salbum.name}} - {{salbum.release_date}}<br>
-                  {{salbum.label}}<br>
-                </div>
-                <h5>
-                  <a href="{{salbum.external_urls.spotify}}" target="_blank"><i class="fa fa-spotify"></i> Listen</a>
-                </h5>
-                <h4>Tracks</h4>
-                <div *ngFor="let track of salbum.tracks.items">
-                  <div>
-                    {{track.track_number}}. {{track.name}} - {{track.duration_ms / 1000}}
-                  </div>
-                </div>
-              </div>
+                            <!--<a *ngIf="album.spotifyAlbumId" (click)="getSpotifyAlbum(album.spotifyAlbumId)"><i-->
+                            <!--class="fa fa-spotify"></i>-->
+                            <!--get album on Spotify-->
+                            <!--</a>-->
+                            <div *ngIf="salbum.tracks"
+                                 style="border: solid 1px #999; min-height: 76px; margin-bottom: 10px; padding: 5px;">
+                                <h4>Album</h4>
+                                <div style="min-height: 76px;">
+                                    <div *ngFor="let image of salbum.images">
+                                        <img align="left" style="margin-right: 10px; border: solid 1px #999;"
+                                             *ngIf="image.height === 64" [src]="image.url">
+                                    </div>
+                                    {{salbum.name}} - {{salbum.release_date}}<br>
+                                    {{salbum.label}}<br>
+                                </div>
+                                <h5>
+                                    <a href="{{salbum.external_urls.spotify}}" target="_blank"><i
+                                        class="fa fa-spotify"></i> Listen</a>
+                                </h5>
+                                <h4>Tracks</h4>
+                                <div *ngFor="let track of salbum.tracks.items">
+                                    <div>
+                                        {{track.track_number}}. {{track.name}} - {{track.duration_ms / 1000}}
+                                    </div>
+                                </div>
+                            </div>
 
-              <a (click)="searchSpotifyAlbum(album.name)"><i
-                class="fa fa-spotify"></i>
-                search for album on Spotify
-              </a><br>
-              <div *ngIf="sralbum.albums">
-                <h3>Search result</h3>
-                <div style="border: solid 1px #999; min-height: 76px; margin-bottom: 10px; padding: 5px;"
-                     *ngFor="let a of sralbum.albums.items">
-                  <div>
-                    <div *ngFor="let image of a.images">
-                      <img align="left" style="margin-right: 10px;" *ngIf="image.height === 64" [src]="image.url">
-                    </div>
-                    {{a.name}} - {{a.artists[0].name}} - {{a.id}}<br>
-                    <a (click)="album.spotifyAlbumId = a.id"><i class="fa fa-clipboard"></i> Use id</a>
-                    <a href="https://open.spotify.com/album/{{a.id}}" target="_blank"><i
-                      class="fa fa-play-circle-o"></i> Listen</a>
-                  </div>
-                </div>
-              </div>
+                            <a (click)="searchSpotifyAlbum(album.name)"><i
+                                class="fa fa-spotify"></i>
+                                search for album on Spotify
+                            </a><br>
+                            <div *ngIf="sralbum.albums">
+                                <h3>Search result</h3>
+                                <div
+                                    style="border: solid 1px #999; min-height: 76px; margin-bottom: 10px; padding: 5px;"
+                                    *ngFor="let a of sralbum.albums.items">
+                                    <div>
+                                        <div *ngFor="let image of a.images">
+                                            <img align="left" style="margin-right: 10px;" *ngIf="image.height === 64"
+                                                 [src]="image.url">
+                                        </div>
+                                        {{a.name}} - {{a.artists[0].name}} - {{a.id}}<br>
+                                        <a (click)="album.spotifyAlbumId = a.id"><i class="fa fa-clipboard"></i> Use id</a>
+                                        <a href="https://open.spotify.com/album/{{a.id}}" target="_blank"><i
+                                            class="fa fa-play-circle-o"></i> Listen</a>
+                                    </div>
+                                </div>
+                            </div>
 
-            </form>
-          </td>
-          <td>
-            {{album.year}}
-          </td>
-          <td>
-            <input type="checkbox"
-                   [(ngModel)]="album.owned"
-                   (change)="setOwned(album)">
-          </td>
-          <td>
-            <span (click)="deleteAlbum(album);"><i class="fa fa-trash-o fa-2x"></i></span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
+                        </form>
+                    </td>
+                    <td>
+                        {{album.year}}
+                    </td>
+                    <td>
+                        <input type="checkbox"
+                               [(ngModel)]="album.owned"
+                               (change)="setOwned(album)">
+                    </td>
+                    <td>
+                        <span (click)="deleteAlbum(album);"><i class="fa fa-trash-o fa-2x"></i></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
 
-    <table>
-      <tbody *ngIf="!newalbum">
-      <tr>
-        <td>
+        <table>
+            <tbody *ngIf="!newalbum">
+            <tr>
+                <td>
           <span (click)="editing = {}; salbum = {}; sralbum = {}; newalbum = true">
             <i class="fa fa-plus-square-o fa-2x"></i>
           </span>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      </tbody>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
 
-      <tbody *ngIf="newalbum">
-      <tr>
-        <td></td>
-        <td>
-          <h2>New album</h2>
-          <form name="newalbum">
-            name: <input appAutoFocus type="text" name="name" [(ngModel)]="n.name">
-            year: <input type="number" name="year" [(ngModel)]="n.year">
-            <button class="button-outline" type="button" (click)="newalbum = false">Cancel</button>
-            <button class="button" type="submit" (click)="createAlbum(n)">Create album</button>
-          </form>
-        </td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      </tbody>
-    </table>
+            <tbody *ngIf="newalbum">
+            <tr>
+                <td>
+                    <a (click)="newalbum = false"><i
+                        class="fa fa-times-circle-o fa-2x"></i>
+                    </a>
+                </td>
+                <td>
+                    <h2>New album</h2>
+                    <form name="newalbum">
+                        name: <input appAutoFocus type="text" name="name" [(ngModel)]="n.name">
+                        year: <input type="number" name="year" [(ngModel)]="n.year">
+                        <button class="button-outline" type="button" (click)="newalbum = false">Cancel</button>
+                        <button class="button" type="submit" (click)="createAlbum(n)">Create album</button>
+                    </form>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
 
-    <button class="button" (click)="albumService.removeAll();">Delete all albums</button>
-    <button class="button-outline" (click)="albumService.fromBackup();">Restore from backup</button>
+        <button class="button" (click)="albumService.removeAll();">Delete all albums</button>
+        <button class="button-outline" (click)="albumService.fromBackup();">Restore from backup</button>
 
-  </div>
+    </div>
 
-  <img
-    sizes="(max-width: 1400px) 100vw, 1400px"
-    srcset="
+    <img
+        sizes="(max-width: 1400px) 100vw, 1400px"
+        srcset="
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_200.jpg 200w,
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_449.jpg 449w,
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_625.jpg 625w,
@@ -182,6 +194,6 @@ assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1146.jpg 1146w,
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1264.jpg 1264w,
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1371.jpg 1371w,
 assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1400.jpg 1400w"
-    src="assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1400.jpg"
-    alt="">
+        src="assets/img/zappa-rock-stars-and-parents_tpdj1i_c_scale,w_1400.jpg"
+        alt="">
 </main>
