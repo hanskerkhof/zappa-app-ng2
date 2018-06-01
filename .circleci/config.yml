@@ -27,6 +27,10 @@ jobs:
           name: angular-build
           command: ./node_modules/.bin/ng build --no-progress --prod
 
+      - run:
+          name: deploy
+          command: yarn run deploy
+
 #      - run:
 #          name: angular-build
 #          command: |
