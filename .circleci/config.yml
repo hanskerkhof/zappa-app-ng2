@@ -23,6 +23,10 @@ jobs:
 #          name: angular-lint
 #          command: yarn lint
 
+      - run:
+          name: angular-build
+          command: ./node_modules/.bin/ng build --no-progress --prod
+
 #      - run:
 #          name: angular-build
 #          command: |
