@@ -1,5 +1,7 @@
 # Zappa-app
 
+[![CircleCI](https://circleci.com/gh/hanskerkhof/zappa-app-ng2.svg?style=svg)](https://circleci.com/gh/hanskerkhof/zappa-app-ng2)
+
 This simple project is created to learn and understand angular2
 It shows a list of all Frank zappa (antemortem) albums.
 
