@@ -1,0 +1,41 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/repo
+    docker:
+      - image: hanskerkhof/ubuntu-node-awscli:1.2
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: install-dependencies
+          command: yarn install
+      - save_cache:
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+          paths:
+            - ~/.cache/yarn
+            - ./node_modules
+#      - run:
+#          name: angular-test
+#          command: yarn test --single-run --no-progress
+#      - run:
+#          name: angular-lint
+#          command: yarn lint
+
+#      - run:
+#          name: angular-build
+#          command: |
+#            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#              node version.js && node_modules/\@angular/cli/bin/ng build --no-progress --prod
+#            else
+#              node version.js && node_modules/\@angular/cli/bin/ng build --prod --no-progress --base-href=/${CIRCLE_BRANCH}/
+#            fi
+#      - run:
+#          name: deploy-s3.sh
+#          command: |
+#             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+#               sh ./deploy-s3.sh
+#             else
+#               sh ./deploy-s3.sh ${CIRCLE_BRANCH}
+#             fi
